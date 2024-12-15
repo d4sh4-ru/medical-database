@@ -70,11 +70,25 @@ CREATE TABLE LegalEntities (
 -- Содержит информацию о лекарственных препаратах
 CREATE TABLE Medications (
     trade_name VARCHAR(255) PRIMARY KEY CHECK (trade_name ~ '^[A-Za-zА-Яа-я0-9 ]+$'), -- Торговое наименование препарата (идентификатор)
-    legal_entity_id INT REFERENCES LegalEntities(id) ON DELETE CASCADE ON UPDATE CASCADE, -- Ссылка на производителя препарата
-    pharmacological_group_id INT REFERENCES PharmacologicalGroups(id) ON DELETE CASCADE ON UPDATE CASCADE, -- Ссылка на фармакологическую группу
     storage_conditions TEXT, -- Условия хранения препарата
     is_prescription BOOLEAN NOT NULL DEFAULT FALSE, -- Препарат по рецепту
-    is_dietary_supplement BOOLEAN NOT NULL DEFAULT TRUE-- Является ли БАДом
+    is_dietary_supplement BOOLEAN NOT NULL DEFAULT TRUE -- Является ли БАДом
+);
+
+-- Таблица: MedicationLegalEntities
+-- Связка между лекарственными препаратами и юридическими лицами
+CREATE TABLE MedicationLegalEntities (
+    medication_id VARCHAR(255) REFERENCES core.Medications(trade_name) ON DELETE CASCADE ON UPDATE CASCADE,
+    legal_entity_id INT REFERENCES core.LegalEntities(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (medication_id, legal_entity_id)
+);
+
+-- Таблица: MedicationPharmacologicalGroups
+-- Связка между лекарственными препаратами и фармакологическими группами
+CREATE TABLE MedicationPharmacologicalGroups (
+    medication_id VARCHAR(255) REFERENCES core.Medications(trade_name) ON DELETE CASCADE ON UPDATE CASCADE,
+    pharmacological_group_id INT REFERENCES core.PharmacologicalGroups(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (medication_id, pharmacological_group_id)
 );
 
 -- Таблица: MedicationReleaseForms
