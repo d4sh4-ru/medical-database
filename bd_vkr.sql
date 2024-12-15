@@ -44,15 +44,17 @@ CREATE TABLE RelatedUsers (
 -- Содержит информацию о формах выпуска лекарственных препаратов
 CREATE TABLE ReleaseForms (
     id SERIAL PRIMARY KEY, -- Уникальный идентификатор формы выпуска
-    dosage_per_tablet VARCHAR(15) CHECK (dosage_per_tablet ~ '^[0-9]+ ?[A-Za-zА-Яа-я]+$'), -- Дозировка на одну таблетку
-    tablets_count INT CHECK (tablets_count > 0) -- Количество таблеток в упаковке
+    dosage_per_tablet VARCHAR(15) CHECK (dosage_per_tablet ~ '^[0-9]+(\.[0-9]+)? ?[A-Za-zА-Яа-я]+$'), -- Дозировка на одну таблетку
+    tablets_count INT CHECK (tablets_count > 0), -- Количество таблеток в упаковке
+    UNIQUE (dosage_per_tablet, tablets_count)
 );
 
 -- Таблица: PharmacologicalGroups
 -- Содержит информацию о фармакологических группах препаратов
 CREATE TABLE PharmacologicalGroups (
     id SERIAL PRIMARY KEY, -- Уникальный идентификатор фармакологической группы
-    name VARCHAR(255) CHECK (name ~ '^[A-Za-zА-Яа-я0-9 -]+$') NOT NULL -- Название фармакологической группы
+    name VARCHAR(255) CHECK (name ~ '^[A-Za-zА-Яа-я0-9 -]+$') NOT NULL, -- Название фармакологической группы
+    UNIQUE (name)
 );
 
 -- Таблица: LegalEntities
@@ -60,7 +62,8 @@ CREATE TABLE PharmacologicalGroups (
 CREATE TABLE LegalEntities (
     id SERIAL PRIMARY KEY, -- Уникальный идентификатор юридического лица
     name VARCHAR(255) CHECK (name ~ '^[A-Za-zА-Яа-я0-9 ]+$') NOT NULL, -- Название юридического лица
-    country VARCHAR(20) CHECK (country ~ '^[A-Za-zА-Яа-я ]+$') NOT NULL -- Страна регистрации юридического лица
+    country VARCHAR(30) CHECK (country ~ '^[A-Za-zА-Яа-я ]+$') NOT NULL, -- Страна регистрации юридического лица
+    UNIQUE (name, country)
 );
 
 -- Таблица: Medications
