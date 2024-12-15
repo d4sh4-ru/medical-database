@@ -70,7 +70,7 @@ CREATE TABLE legal_entities (
 -- Содержит информацию о лекарственных препаратах
 CREATE TABLE medications (
     id SERIAL PRIMARY KEY,
-    trade_name VARCHAR(255) CHECK (trade_name ~ '^[A-Za-zА-Яа-я0-9 ]+$'), -- Торговое наименование препарата (идентификатор)
+    trade_name VARCHAR(255) CHECK (trade_name ~ '^[A-Za-zА-Яа-я0-9 ]+$') NOT NULL, -- Торговое наименование препарата (идентификатор)
     storage_conditions TEXT, -- Условия хранения препарата
     is_prescription BOOLEAN NOT NULL DEFAULT FALSE, -- Препарат по рецепту
     is_dietary_supplement BOOLEAN NOT NULL DEFAULT TRUE, -- Является ли БАДом
