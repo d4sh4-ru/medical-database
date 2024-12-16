@@ -123,18 +123,11 @@ CREATE TABLE medication_restock (
 -- Таблица: administration_methods
 -- Содержит информацию о способах применения лекарств
 CREATE TABLE administration_methods (
-    id SERIAL PRIMARY KEY, -- Уникальный идентификатор способа применения
-    medication_id INT REFERENCES medications(id) ON DELETE CASCADE ON UPDATE CASCADE, -- Ссылка на препарат
-    single_dosage VARCHAR(255) CHECK (single_dosage ~ '^[0-9]+ ?[A-Za-zА-Яа-я]+$'), -- Разовая дозировка
-    interval INT -- Интервал между приёмами
-);
-
--- Таблица: administration_times
--- Содержит информацию о времени приёма для конкретного способа применения
-CREATE TABLE administration_times (
-    id SERIAL PRIMARY KEY, -- Уникальный идентификатор записи
-    method_id INT REFERENCES administration_methods(id) ON DELETE CASCADE ON UPDATE CASCADE, -- Ссылка на способ применения
-    time TIME NOT NULL -- Время приёма
+    id SERIAL PRIMARY KEY,
+    medication_id INT REFERENCES medications(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    single_dosage VARCHAR(255) CHECK (single_dosage ~ '^[0-9]+ ?[A-Za-zА-Яа-я]+$') NOT NULL,
+    interval INT NOT NULL,
+    administration_times VARCHAR(255) NOT NULL
 );
 
 -- Таблица: medication_schedules
