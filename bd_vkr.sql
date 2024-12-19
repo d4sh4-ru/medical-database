@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS MedTrack;
+--DROP DATABASE IF EXISTS MedTrack;
 
-CREATE DATABASE MedTrack;
+--CREATE DATABASE MedTrack;
 
-\connect medtrack
+--\connect medtrack
 
 CREATE SCHEMA IF NOT EXISTS core;
 
